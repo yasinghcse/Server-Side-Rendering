@@ -16,20 +16,24 @@ const renderer = (req, store, context) => {
         </Provider>
     );
     const helmet = Helmet.renderStatic();
-    return `
-        <html>
-            <head>
-                ${helmet.title.toString()}
-                ${helmet.meta.toString()}
-            </head>
-            <body>
-                <div id="root">${content}</div>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-                <script>window.__INITIAL_REACT_STATE__=${serializer(store.getState())}</script>
-                <script src="bundle.js"></script>
-            </body>
-        </html>
-    `;
+    // return `
+        // <html>
+        //     <head>
+        //         ${helmet.title.toString()}
+        //         ${helmet.meta.toString()}
+        //     </head>
+        //     <body>
+        //         <div id="root">${content}</div>
+        //         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        //         <script>window.__INITIAL_REACT_STATE__=${serializer(store.getState())}</script>
+        //         <script src="bundle.js"></script>
+        //     </body>
+        // </html>
+    // `;
+    return {
+        content,
+        reduxState: serializer(store.getState())
+    };
 }
 
 export default renderer;

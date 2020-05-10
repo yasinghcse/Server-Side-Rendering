@@ -218,7 +218,7 @@ module.exports = require("redux");
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(9);
+/* WEBPACK VAR INJECTION */(function(__dirname) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_renderer__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_createStore__ = __webpack_require__(20);
@@ -227,6 +227,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__client_routes__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_express_http_proxy__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_express_http_proxy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_express_http_proxy__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_adaro__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_adaro___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_adaro__);
 // import "babel-polyfill";
 
 
@@ -234,8 +236,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+const path = __webpack_require__(28);
+
 
 const app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
+
+app.set('view engine', 'dust');
+app.engine('dust', __WEBPACK_IMPORTED_MODULE_6_adaro___default.a.dust({
+    helpers: ["dustjs-helpers"]
+}));
+console.log("path.join(__dirname, './template')", path.join(__dirname, './template'));
+app.set('views', "/Users/yadwindersingh/Desktop/Code/React/SSR/server/src/template");
+
 app.use(__WEBPACK_IMPORTED_MODULE_0_express___default.a.static("public"));
 app.use("/api", __WEBPACK_IMPORTED_MODULE_5_express_http_proxy___default()("http://react-ssr-api.herokuapp.com", {
     proxyReqOptDecorator(opts) {
@@ -268,13 +280,15 @@ app.get("*", (req, res) => {
             res.status(404);
         }
 
-        res.send(content);
+        // res.send(content);
+        res.render("app-temp", {});
     });
 });
 
 app.listen(3000, () => {
     console.log("Running app at port 3000");
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "/"))
 
 /***/ }),
 /* 9 */
@@ -326,20 +340,24 @@ const renderer = (req, store, context) => {
         )
     ));
     const helmet = __WEBPACK_IMPORTED_MODULE_7_react_helmet__["Helmet"].renderStatic();
-    return `
-        <html>
-            <head>
-                ${helmet.title.toString()}
-                ${helmet.meta.toString()}
-            </head>
-            <body>
-                <div id="root">${content}</div>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-                <script>window.__INITIAL_REACT_STATE__=${__WEBPACK_IMPORTED_MODULE_6_serialize_javascript___default()(store.getState())}</script>
-                <script src="bundle.js"></script>
-            </body>
-        </html>
-    `;
+    // return `
+    // <html>
+    //     <head>
+    //         ${helmet.title.toString()}
+    //         ${helmet.meta.toString()}
+    //     </head>
+    //     <body>
+    //         <div id="root">${content}</div>
+    //         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    //         <script>window.__INITIAL_REACT_STATE__=${serializer(store.getState())}</script>
+    //         <script src="bundle.js"></script>
+    //     </body>
+    // </html>
+    // `;
+    return {
+        content,
+        reduxState: __WEBPACK_IMPORTED_MODULE_6_serialize_javascript___default()(store.getState())
+    };
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (renderer);
@@ -805,6 +823,18 @@ module.exports = require("axios");
 /***/ (function(module, exports) {
 
 module.exports = require("express-http-proxy");
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+module.exports = require("adaro");
 
 /***/ })
 /******/ ]);

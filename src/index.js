@@ -5,8 +5,23 @@ import createStore from "./helpers/createStore";
 import {matchRoutes} from "react-router-config";
 import Routes from "./client/routes";
 import proxy from "express-http-proxy";
+const path = require("path");
+import adaro from "adaro";
+
 
 const app = express();
+
+
+app.set('view engine', 'dust');
+app.engine('dust', adaro.dust({
+    helpers: [
+        "dustjs-helpers"
+    ]
+}));
+console.log("path.join(__dirname, './template')", path.join(__dirname, './template'));
+app.set('views',"/Users/yadwindersingh/Desktop/Code/React/SSR/server/src/template");
+
+
 app.use(express.static("public"));
 app.use("/api", proxy("http://react-ssr-api.herokuapp.com", {
     proxyReqOptDecorator(opts) {
@@ -14,6 +29,9 @@ app.use("/api", proxy("http://react-ssr-api.herokuapp.com", {
         return opts;
     }
 }));
+
+
+
 
 
 app.get("*", (req, res) => {
@@ -42,7 +60,8 @@ app.get("*", (req, res) => {
             res.status(404);
         }
 
-        res.send(content);
+        // res.send(content);
+        res.render("app-temp", {});
     })
 
 });

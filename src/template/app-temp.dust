@@ -1,0 +1,8 @@
+ <html>
+    <body>
+        <div id="root">{content}</div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script>window.__INITIAL_REACT_STATE__={reactState}</script>
+        <script src="bundle.js"></script>
+    </body>
+</html>
